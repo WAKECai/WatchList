@@ -6,7 +6,11 @@
     {% for movie in movies %}
     <li>{{ movie.title }} - {{ movie.year }}
         <span class="float-right">
+            {% if contains_chinese(movie.title) %}
+            <a class="douban" href="https://movie.douban.com/subject_search?search_text={{ movie.title }}" target="_blank" title="Find this movie on 豆瓣">豆瓣</a>
+            {% else %}
             <a class="imdb" href="https://www.imdb.com/find?q={{ movie.title }}" target="_blank" title="Find this movie on IMDb">IMDb</a>
+            {% endif %}
         </span>
     </li>
     {% endfor %}

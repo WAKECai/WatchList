@@ -27,6 +27,29 @@ def inject_user():    # 函数名可以随意修改
     return dict(user=user)    # 需要返回字典，等同于返回 return {'user':user}
 
 
+@app.context_processor
+def inject_function():
+    # 定义要引入的函数
+
+    # 判断是否为中文字符
+    def is_chinese(char):
+        if '\u4e00' <= char <= '\u9fa5':
+            return True
+        else:
+            return False
+
+    # 判断是否包含中文字符
+    def contains_chinese(text):
+        for char in text:
+            if is_chinese(char):
+                return True
+        return False
+
+    return {
+        'contains_chinese': contains_chinese
+    }
+
+
 @app.cli.command()
 @click.option('--drop', is_flag=True, help='Create after drop.')
 def initdb(drop):
@@ -91,7 +114,6 @@ def user_page(name):
 @app.route('/test')
 def test_url_for():
     # 下面是一些调用示例
-    print(url_for('hello'))
     print(url_for('user_page', name='greyli'))  # 输出：/user/greyli
     print(url_for('user_page', name='peter'))
     print(url_for('test_url_for'))
@@ -101,12 +123,14 @@ def test_url_for():
     return 'Test page'
 
 
+# Not Found 错误
 @app.errorhandler(404)
 def page_not_found(e):
     # user = User.query.first()
     return render_template('404.html'), 404
 
 
+# 定义两个类
 class User(db.Model):   # 表名将会是 user（自动生成，小写处理）
     id = db.Column(db.Integer, primary_key=True)    # 主键
     name = db.Column(db.String(20))     # 名字
