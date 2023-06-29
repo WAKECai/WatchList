@@ -20,6 +20,13 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # 关闭对模型修改的
 db = SQLAlchemy(app)
 
 
+# 模版上下处理函数：后面我们创建的任意一个模板，都可以在模板中直接使用 user 变量。
+@app.context_processor
+def inject_user():    # 函数名可以随意修改
+    user = User.query.first()
+    return dict(user=user)    # 需要返回字典，等同于返回 return {'user':user}
+
+
 @app.cli.command()
 @click.option('--drop', is_flag=True, help='Create after drop.')
 def initdb(drop):
@@ -71,9 +78,9 @@ def forge():
 
 @app.route('/')
 def index():
-    user = User.query.first()   # 读取用户记录
+    # user = User.query.first()   # 读取用户记录
     movies = Movie.query.all()  # 读取所有电影记录
-    return render_template('index.html', user=user, movies=movies)
+    return render_template('index.html', movies=movies)
 
 
 @app.route('/user/<name>')
@@ -92,6 +99,12 @@ def test_url_for():
     # 下面这个调用传入了多余的关键字参数，它们会被作为查询字符串附加到URL后面
     print(url_for('test_url_for', num=2))
     return 'Test page'
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    # user = User.query.first()
+    return render_template('404.html'), 404
 
 
 class User(db.Model):   # 表名将会是 user（自动生成，小写处理）
