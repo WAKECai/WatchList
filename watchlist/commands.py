@@ -21,27 +21,35 @@ def forge():
 
     name = 'Grey Li'
     movies = [
-        {'title': 'My Neighbor Totoro', 'year': '1988'},
-        {'title': 'Dead Poets Society', 'year': '1989'},
-        {'title': 'A Perfect World', 'year': '1993'},
-        {'title': 'Leon', 'year': '1994'},
-        {'title': 'Mahjong', 'year': '1996'},
-        {'title': 'Swallowtail Butterfly', 'year': '1996'},
-        {'title': 'King of Comedy', 'year': '1999'},
-        {'title': 'Devils on the Doorstep', 'year': '1999'},
-        {'title': 'WALL-E', 'year': '2008'},
-        {'title': 'The Pork of Music', 'year': '2012'},
-        {'title': '头号玩家', 'year': '2018'},
-        {'title': '流浪地球1', 'year': '2012'},
-        {'title': '流浪地球2', 'year': '2023'},
-        {'title': '暮光之城', 'year': '2008'},
-        {'title': '横空出世', 'year': '1999'},
+        {'title': 'My Neighbor Totoro', 'year': '1988', 'is_read': False},
+        {'title': 'Dead Poets Society', 'year': '1989', 'is_read': False},
+        {'title': 'A Perfect World', 'year': '1993', 'is_read': False},
+        {'title': 'Leon', 'year': '1994', 'is_read': False},
+        {'title': 'Mahjong', 'year': '1996', 'is_read': False},
+        {'title': 'Swallowtail Butterfly', 'year': '1996', 'is_read': False},
+        {'title': 'King of Comedy', 'year': '1999', 'is_read': False},
+        {'title': 'Devils on the Doorstep', 'year': '1999', 'is_read': False},
+        {'title': 'WALL-E', 'year': '2008', 'is_read': False},
+        {'title': 'The Pork of Music', 'year': '2012', 'is_read': False},
+        {'title': '头号玩家', 'year': '2018', 'is_read': True},
+        {'title': '流浪地球1', 'year': '2012', 'is_read': False},
+        {'title': '流浪地球2', 'year': '2023', 'is_read': True},
+        {'title': '暮光之城', 'year': '2008', 'is_read': False},
+        {'title': '横空出世', 'year': '1999', 'is_read': False},
+        {'title': '让子弹飞', 'year': '2010', 'is_read': False},
+        {'title': '战狼', 'year': '2015', 'is_read': False},
+        {'title': '战狼2', 'year': '2017', 'is_read': False},
+        {'title': '蜘蛛侠:纵横宇宙', 'year': '2023', 'is_read': False},
+        {'title': '天空之城', 'year': '1986', 'is_read': False},
+        {'title': '银河护卫队3', 'year': '2023', 'is_read': False},
+        {'title': '肖申克的救赎', 'year': '1994', 'is_read': False},
+        {'title': '阿甘正传', 'year': '1994', 'is_read': False},
     ]
 
     user = User(name=name)
     db.session.add(user)
     for m in movies:
-        movie = Movie(title=m['title'], year=m['year'])
+        movie = Movie(title=m['title'], year=m['year'], is_read=m['is_read'])
         db.session.add(movie)
 
     db.session.commit()

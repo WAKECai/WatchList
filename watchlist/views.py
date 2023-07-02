@@ -3,6 +3,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 
 from watchlist import app, db
 from watchlist.models import User, Movie
+from distutils.util import strtobool
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -13,12 +14,20 @@ def index():
         # 获取表单数据
         title = request.form.get('title')   # 传入表单对应输入字段的name值
         year = request.form.get('year')
+        try:
+            is_read = strtobool(request.values.get('is_read'))
+        except ValueError:
+            flash('Invalid input.')  # 显示错误提示
+            return redirect(url_for('index'))  # 重定向回主页
+        else:
+            pass
+
         # 验证数据
         if not title or not year or len(year) > 4 or len(title) > 60:
             flash('Invalid input.')     # 显示错误提示
             return redirect(url_for('index'))   # 重定向回主页
         # 保存表单数据到数据库
-        movie = Movie(title=title, year=year)    # 创建记录
+        movie = Movie(title=title, year=year, is_read=is_read)    # 创建记录
         db.session.add(movie)   # 添加到数据库对话
         db.session.commit()     # 提交数据库对话
         flash('Item created.')  # 显示成功创建的提示
@@ -36,11 +45,19 @@ def edit(movie_id):
     if request.method == 'POST':
         title = request.form['title']
         year = request.form['year']
+        try:
+            is_read = strtobool(request.values['is_read'])
+        except ValueError:
+            flash('Invalid input.')     # 显示错误提示
+            return redirect(url_for('index'))   # 重定向回对应的编辑页面
+        else:
+            pass
         if not title or not year or len(year) > 4 or len(title) > 60:
             flash('Invalid input.')     # 显示错误提示
             return redirect(url_for('index'))   # 重定向回对应的编辑页面
         movie.title = title  # 更新标题
         movie.year = year  # 更新年份
+        movie.is_read = is_read  # 更新阅览情况
         db.session.commit()  # 提交数据库会话
         flash('Item updated.')
         return redirect(url_for('index'))  # 重定向回主页
@@ -70,6 +87,7 @@ def test_url_for():
     return 'Test page'
 
 
+# 登录
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':

@@ -5,6 +5,8 @@
 <form method="post">
     Name <input type="text" name="title" autocomplete="off" required value="{{ movie.title }}">
     Year <input type="text" name="year" autocomplete="off" required>
+    Is_Read <input type="radio" name="is_read" value="True"> Yes <input type="radio" name="is_read" value="False" checked> No
     <input class="btn" type="submit" name="submit" value="Edit">
+    <input type="reset" class="btn" name="reset" value="Reset">
 </form>
 {% endblock %}

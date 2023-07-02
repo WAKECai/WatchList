@@ -6,12 +6,14 @@
 <form method="post">
     Name <input type="text" name="title" autocomplete="off" required>
     Year <input type="text" name="year" autocomplete="off" required>
+    Is_Read <input type="radio" name="is_read" value="True"> Yes <input type="radio" name="is_read" value="False" checked> No
     <input class="btn" type="submit" name="submit" value="Add">
+    <input type="reset" class="btn" name="reset" value="Reset">
 </form>
 {% endif %}
 <ul class="movie-list">
     {% for movie in movies %}
-    <li>{{ movie.title }} - {{ movie.year }}
+    <li>{{ movie.title }} - {{ movie.year }} -  {% if movie.is_read %} - 已阅过 {% else %} - 未阅 {% endif %}
         <span class="float-right">
             {% if current_user.is_authenticated %}
             <a class="btn" href="{{ url_for('edit', movie_id=movie.id) }}">Edit</a>

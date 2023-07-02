@@ -20,3 +20,4 @@ class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(60))    # 电影标题
     year = db.Column(db.String(10))  # 电影年份
+    is_read = db.Column(db.Boolean, default=False)     # 是否阅览过
